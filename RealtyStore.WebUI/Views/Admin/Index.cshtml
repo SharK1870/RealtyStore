@@ -1,0 +1,43 @@
+﻿@model IEnumerable<RealtyStore.Domain.Entities.Realty>
+
+@{
+    ViewBag.Title = "Админ панель: список товаров";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Список недвижимости</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-condensed table-bordered">
+            <tr>
+                <th class="text-right">ID</th>
+                <th>Название</th>
+                <th class="text-right">Цена</th>
+                <th class="text-center">Действия</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-right">@item.RealtyId</td>
+                    <td>@Html.ActionLink(item.Name, "Edit", new { item.RealtyId })</td>
+                    <td class="text-right">@item.Price.ToString("# $")</td>
+                    <td class="text-center">
+                        @using (Html.BeginForm("Delete", "Admin"))
+                        {
+                            @Html.Hidden("RealtyId", item.RealtyId)
+                            <input type="submit"
+                                   class="btn btn-default btn-xs"
+                                   value="Удалить" />
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="panel-footer">
+        @Html.ActionLink("Добавить недвижимость", "Create", null,
+            new { @class = "btn btn-default" })
+    </div>
+</div>
